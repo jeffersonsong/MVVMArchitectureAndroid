@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mindorks.framework.mvvm.R
-import com.mindorks.framework.mvvm.data.api.ApiHelper
 import com.mindorks.framework.mvvm.data.api.ApiServiceImpl
 import com.mindorks.framework.mvvm.data.model.User
 import com.mindorks.framework.mvvm.ui.base.ViewModelFactory
@@ -72,7 +71,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupViewModel() {
         mainViewModel = ViewModelProviders.of(
             this,
-            ViewModelFactory(ApiHelper(ApiServiceImpl()))
+            ViewModelFactory(ApiServiceImpl())
         ).get(MainViewModel::class.java)
     }
 }
