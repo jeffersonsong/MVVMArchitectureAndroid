@@ -69,9 +69,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
+        val url = getString(R.string.service_url)
         mainViewModel = ViewModelProviders.of(
             this,
-            ViewModelFactory(ApiServiceImpl())
+            ViewModelFactory(ApiServiceImpl(url))
         ).get(MainViewModel::class.java)
     }
 }

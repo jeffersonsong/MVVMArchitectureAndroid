@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MVVM-Architecture-Android-Beginners</string>
+    <string name="service_url">https://5e510330f2c0d300147c034c.mockapi.io/users</string>
 </resources>
