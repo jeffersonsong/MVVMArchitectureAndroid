@@ -6,14 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.mindorks.framework.mvvm.data.model.User
 import com.mindorks.framework.mvvm.data.repository.MainRepository
 import com.mindorks.framework.mvvm.utils.Resource
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
     private val users = MutableLiveData<Resource<List<User>>>()
-    private val compositeDisposable = CompositeDisposable()
 
     init {
         fetchUsers()
@@ -21,25 +20,25 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
     private fun fetchUsers() {
         users.postValue(Resource.loading(null))
-        compositeDisposable.add(
-                mainRepository.getUsers()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ userList ->
-                            users.postValue(Resource.success(userList))
-                        }, { throwable ->
-                            users.postValue(Resource.error("Something Went Wrong", null))
-                        })
-        )
-    }
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
+        val call = mainRepository.getUsers()
+        call.enqueue(object : Callback<List<User>> {
+            override fun onResponse(call: Call<List<User>>?, response: Response<List<User>>?) {
+                if(response!!.isSuccessful) {
+                    val userList = response.body()
+                    users.postValue(Resource.success(userList))
+                } else {
+                    users.postValue(Resource.error("Something Went Wrong", null))
+                }
+            }
+
+            override fun onFailure(call: Call<List<User>>?, t: Throwable?) {
+                users.postValue(Resource.error("Something Went Wrong", null))
+            }
+        })
     }
 
     fun getUsers(): LiveData<Resource<List<User>>> {
         return users
     }
-
 }
