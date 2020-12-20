@@ -9,9 +9,8 @@ import com.mindorks.framework.mvvm.R
 import com.mindorks.framework.mvvm.data.model.User
 import kotlinx.android.synthetic.main.item_layout.view.*
 
-class MainAdapter(
-        private val users: ArrayList<User>
-) : RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
+class MainAdapter(private val users: MutableList<User>)
+    : RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User) {
@@ -41,5 +40,4 @@ class MainAdapter(
     fun addData(list: List<User>) {
         users.addAll(list)
     }
-
 }

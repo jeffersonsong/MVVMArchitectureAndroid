@@ -9,18 +9,20 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mindorks.framework.mvvm.R
-import com.mindorks.framework.mvvm.data.api.ApiService
 import com.mindorks.framework.mvvm.data.model.User
 import com.mindorks.framework.mvvm.ui.base.ViewModelFactory
 import com.mindorks.framework.mvvm.ui.main.adapter.MainAdapter
 import com.mindorks.framework.mvvm.ui.main.viewmodel.MainViewModel
 import com.mindorks.framework.mvvm.utils.Status
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter: MainAdapter
 
@@ -71,16 +73,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        val url = getString(R.string.service_url)
-        val retrofit = Retrofit.Builder()
-            .baseUrl(url)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val apiService = retrofit.create(ApiService::class.java)
-        mainViewModel = ViewModelProviders.of(
-            this,
-            ViewModelFactory(apiService)
-        ).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(MainViewModel::class.java)
     }
 }
