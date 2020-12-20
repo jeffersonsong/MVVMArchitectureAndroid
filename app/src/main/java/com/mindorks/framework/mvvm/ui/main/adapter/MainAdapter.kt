@@ -1,24 +1,24 @@
 package com.mindorks.framework.mvvm.ui.main.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.mindorks.framework.mvvm.R
 import com.mindorks.framework.mvvm.data.model.User
-import kotlinx.android.synthetic.main.item_layout.view.*
+import com.mindorks.framework.mvvm.databinding.ItemLayoutBinding
 
-class MainAdapter(private val users: MutableList<User>)
-    : RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
+class MainAdapter(private val users: MutableList<User>) :
+    RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            DataViewHolder(
-                    LayoutInflater.from(parent.context).inflate(
-                            R.layout.item_layout, parent,
-                            false
-                    )
-            )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding: ItemLayoutBinding = DataBindingUtil.inflate(
+            inflater, R.layout.item_layout, parent,
+            false
+        )
+        return DataViewHolder(binding)
+    }
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
         holder.bind(users[position])
@@ -30,15 +30,12 @@ class MainAdapter(private val users: MutableList<User>)
         notifyDataSetChanged()
     }
 
-    class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(user: User) {
-            itemView.textViewUserName.text = user.name
-            itemView.textViewUserEmail.text = user.email
-            /*
-            Glide.with(itemView.imageViewAvatar.context)
-                    .load(user.avatar)
-                    .into(itemView.imageViewAvatar)
-                    */
+    class DataViewHolder(private val binding: ItemLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(model: User) {
+            binding.user = model
+            binding.executePendingBindings()
         }
     }
 }
