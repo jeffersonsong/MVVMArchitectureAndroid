@@ -8,6 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mindorks.framework.mvvm.ui.main.view.MainActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,11 +20,14 @@ class AppTest {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
-    @Test
-    fun happyPath() {
+    @Before
+    fun applicationStarted() {
         ActivityScenario.launch(MainActivity::class.java)
+    }
 
-        Thread.sleep(5000L)
+    @Test
+    fun checkUserList() {
+        Thread.sleep(1000L)
         onView(withId(R.id.recyclerView)).check(RecyclerViewItemCountAssertion.isNotEmpty())
     }
 }
