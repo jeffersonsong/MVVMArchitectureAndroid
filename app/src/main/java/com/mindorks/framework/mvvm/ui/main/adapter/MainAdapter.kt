@@ -17,9 +17,11 @@ class MainAdapter(
         fun bind(user: User) {
             itemView.textViewUserName.text = user.name
             itemView.textViewUserEmail.text = user.email
+            /*
             Glide.with(itemView.imageViewAvatar.context)
                     .load(user.avatar)
                     .into(itemView.imageViewAvatar)
+                    */
         }
     }
 
