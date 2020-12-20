@@ -46,17 +46,22 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
+    private fun setupViewModel() {
+        mainViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(MainViewModel::class.java)
+    }
+
     private fun setupObserver() {
-        mainViewModel.getUsers().observe(this, Observer {
+        mainViewModel.getUsers().observe(this) {
             when (it.status) {
+                Status.LOADING -> {
+                    progressBar.visibility = View.VISIBLE
+                    recyclerView.visibility = View.GONE
+                }
                 Status.SUCCESS -> {
                     progressBar.visibility = View.GONE
                     it.data?.let { users -> renderList(users) }
                     recyclerView.visibility = View.VISIBLE
-                }
-                Status.LOADING -> {
-                    progressBar.visibility = View.VISIBLE
-                    recyclerView.visibility = View.GONE
                 }
                 Status.ERROR -> {
                     //Handle Error
@@ -64,16 +69,11 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
                 }
             }
-        })
+        }
     }
 
     private fun renderList(users: List<User>) {
         adapter.addData(users)
         adapter.notifyDataSetChanged()
-    }
-
-    private fun setupViewModel() {
-        mainViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(MainViewModel::class.java)
     }
 }

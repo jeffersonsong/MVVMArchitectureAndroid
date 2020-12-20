@@ -12,6 +12,23 @@ import kotlinx.android.synthetic.main.item_layout.view.*
 class MainAdapter(private val users: MutableList<User>)
     : RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            DataViewHolder(
+                    LayoutInflater.from(parent.context).inflate(
+                            R.layout.item_layout, parent,
+                            false
+                    )
+            )
+
+    override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
+        holder.bind(users[position])
+
+    override fun getItemCount(): Int = users.size
+
+    fun addData(list: List<User>) {
+        users.addAll(list)
+    }
+
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(user: User) {
             itemView.textViewUserName.text = user.name
@@ -22,22 +39,5 @@ class MainAdapter(private val users: MutableList<User>)
                     .into(itemView.imageViewAvatar)
                     */
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            DataViewHolder(
-                    LayoutInflater.from(parent.context).inflate(
-                            R.layout.item_layout, parent,
-                            false
-                    )
-            )
-
-    override fun getItemCount(): Int = users.size
-
-    override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
-            holder.bind(users[position])
-
-    fun addData(list: List<User>) {
-        users.addAll(list)
     }
 }
