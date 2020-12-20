@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @InstallIn(ApplicationComponent::class)
 @Module
-object MyModule {
+object ApiServiceModule {
 
     @Provides
     @Singleton
