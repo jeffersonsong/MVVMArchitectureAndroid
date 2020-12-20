@@ -27,6 +27,4 @@ object ApiServiceModule {
 
         return retrofit.create(ApiService::class.java)
     }
-
-
 }
