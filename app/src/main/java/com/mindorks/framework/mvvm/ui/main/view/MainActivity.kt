@@ -37,7 +37,9 @@ class MainActivity : AppCompatActivity() {
         val adapter = MainAdapter(arrayListOf())
 
         setupRecyclerView(binding.recyclerView, adapter)
-        setupObserver(mainViewModel, adapter)
+        setupObserver(mainViewModel) { userList ->
+            renderUserList(userList, adapter)
+        }
     }
 
     private fun setupRecyclerView(
@@ -54,11 +56,14 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun setupObserver(mainViewModel: MainViewModel, adapter: MainAdapter) {
+    private fun setupObserver(
+        mainViewModel: MainViewModel,
+        observer: (userList: List<User>) -> Unit
+    ) {
         mainViewModel.getUsers().observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    it.data?.let { users -> renderUserList(users, adapter) }
+                    it.data?.let { users -> observer(users) }
                 }
                 Status.ERROR -> {
                     Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
