@@ -6,6 +6,7 @@ import com.mindorks.framework.mvvm.data.model.User
 import com.mindorks.framework.mvvm.data.repository.MainRepository
 import com.mindorks.framework.mvvm.ui.main.viewmodel.MainViewModel
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -13,8 +14,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
+import org.mockito.MockitoAnnotations.initMocks
 import retrofit2.Call
 import java.lang.IllegalArgumentException
 
@@ -28,13 +28,13 @@ class ViewModelFactoryTest  {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        initMocks(this)
     }
 
     @Test
     fun testCreateMainViewModel() {
         val call: Call<List<User>> = mock()
-        Mockito.`when`(mainRepository.getUsers()).thenReturn(call)
+        whenever(mainRepository.getUsers()).thenReturn(call)
 
         val result = sut.create(MainViewModel::class.java)
         assertNotNull(result)

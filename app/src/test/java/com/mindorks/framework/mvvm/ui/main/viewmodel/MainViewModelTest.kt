@@ -1,19 +1,19 @@
 package com.mindorks.framework.mvvm.ui.main.viewmodel
 
-import `mockito-extensions`.RetrofitCallMockUtils.Companion.mockFailure
-import `mockito-extensions`.RetrofitCallMockUtils.Companion.mockResponse
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.mindorks.framework.mvvm.data.model.User
 import com.mindorks.framework.mvvm.data.repository.MainRepository
+import com.mindorks.framework.mvvm.utils.RetrofitCallMockUtils.Companion.mockFailure
+import com.mindorks.framework.mvvm.utils.RetrofitCallMockUtils.Companion.mockResponse
 import com.mindorks.framework.mvvm.utils.Status
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsCollectionContaining.hasItem
 import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.`when`
 import retrofit2.Call
 import retrofit2.Response
 
@@ -29,14 +29,14 @@ class MainViewModelTest {
     @Test
     fun testSuccessfulResponse() {
         val call: Call<List<User>> = mock()
-        `when`(mainRepository.getUsers()).thenReturn(call)
+        whenever(mainRepository.getUsers()).thenReturn(call)
 
         val user: User = mock()
         val userList = arrayListOf(user)
 
         val response: Response<List<User>> = mock()
-        `when`(response.isSuccessful).thenReturn(true)
-        `when`(response.body()).thenReturn(userList)
+        whenever(response.isSuccessful).thenReturn(true)
+        whenever(response.body()).thenReturn(userList)
 
         mockResponse(call, response)
 
@@ -50,10 +50,10 @@ class MainViewModelTest {
     @Test
     fun testUnsuccessfulResponse() {
         val call: Call<List<User>> = mock()
-        `when`(mainRepository.getUsers()).thenReturn(call)
+        whenever(mainRepository.getUsers()).thenReturn(call)
 
         val response: Response<List<User>> = mock()
-        `when`(response.isSuccessful).thenReturn(false)
+        whenever(response.isSuccessful).thenReturn(false)
 
         mockResponse(call, response)
 
@@ -68,7 +68,7 @@ class MainViewModelTest {
     @Test
     fun testFailedResponse() {
         val call: Call<List<User>> = mock()
-        `when`(mainRepository.getUsers()).thenReturn(call)
+        whenever(mainRepository.getUsers()).thenReturn(call)
 
         val exception: Exception = mock()
 
