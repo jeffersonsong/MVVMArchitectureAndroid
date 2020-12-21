@@ -61,9 +61,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel: MainViewModel,
         observer: (change: Resource<List<User>>) -> Unit
     ) {
-        mainViewModel.getUsers().observe(this) {
-            observer(it)
-        }
+        mainViewModel.getUsers().observe(this) { observer(it) }
     }
 
     private fun observe(
