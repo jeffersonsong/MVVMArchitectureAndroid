@@ -27,7 +27,6 @@ class MainAdapter(private val users: MutableList<User>) :
 
     fun addData(list: List<User>) {
         users.addAll(list)
-        notifyDataSetChanged()
     }
 
     class DataViewHolder(private val binding: ItemLayoutBinding) :
