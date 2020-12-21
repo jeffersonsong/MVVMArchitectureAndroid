@@ -13,6 +13,7 @@ import com.mindorks.framework.mvvm.data.model.User
 import com.mindorks.framework.mvvm.ui.base.ViewModelFactory
 import com.mindorks.framework.mvvm.ui.main.adapter.MainAdapter
 import com.mindorks.framework.mvvm.ui.main.viewmodel.MainViewModel
+import com.mindorks.framework.mvvm.utils.BindingAdapters.bindRecyclerViewAdapter
 import com.mindorks.framework.mvvm.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -35,15 +36,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = MainAdapter(arrayListOf())
-        recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                recyclerView.context,
-                (recyclerView.layoutManager as LinearLayoutManager).orientation
-            )
-        )
-        recyclerView.adapter = adapter
+        bindRecyclerViewAdapter(recyclerView, adapter)
     }
 
     private fun setupViewModel() {
