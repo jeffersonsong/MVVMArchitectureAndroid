@@ -10,22 +10,22 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.greaterThan
 
 
-class RecyclerViewItemCountAssertion(private val matcher: Matcher<Int>): ViewAssertion {
+class RecyclerViewItemCountAssertions(private val matcher: Matcher<Int>): ViewAssertion {
     companion object {
-        fun withItemCount(expectedCount: Int): RecyclerViewItemCountAssertion? {
+        fun withItemCount(expectedCount: Int): RecyclerViewItemCountAssertions? {
             return withItemCount(`is`(expectedCount))
         }
 
-        fun isEmpty(): RecyclerViewItemCountAssertion? {
+        fun isEmpty(): RecyclerViewItemCountAssertions? {
             return withItemCount(0)
         }
 
-        fun isNotEmpty(): RecyclerViewItemCountAssertion? {
+        fun isNotEmpty(): RecyclerViewItemCountAssertions? {
             return withItemCount(greaterThan(0))
         }
 
-        fun withItemCount(matcher: Matcher<Int>): RecyclerViewItemCountAssertion? {
-            return RecyclerViewItemCountAssertion(matcher)
+        fun withItemCount(matcher: Matcher<Int>): RecyclerViewItemCountAssertions? {
+            return RecyclerViewItemCountAssertions(matcher)
         }
     }
 

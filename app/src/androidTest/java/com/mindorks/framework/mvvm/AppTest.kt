@@ -2,7 +2,6 @@ package com.mindorks.framework.mvvm
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mindorks.framework.mvvm.ui.main.view.MainActivity
@@ -28,6 +27,6 @@ class AppTest {
     @Test
     fun checkUserList() {
         Thread.sleep(1000L)
-        onView(withId(R.id.recyclerView)).check(RecyclerViewItemCountAssertion.isNotEmpty())
+        onView(withId(R.id.recyclerView)).check(RecyclerViewItemCountAssertions.isNotEmpty())
     }
 }
