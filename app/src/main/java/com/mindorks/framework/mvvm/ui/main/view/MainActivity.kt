@@ -14,6 +14,7 @@ import com.mindorks.framework.mvvm.databinding.ActivityMainBinding
 import com.mindorks.framework.mvvm.ui.base.ViewModelFactory
 import com.mindorks.framework.mvvm.ui.main.adapter.MainAdapter
 import com.mindorks.framework.mvvm.ui.main.viewmodel.MainViewModel
+import com.mindorks.framework.mvvm.utils.Resource
 import com.mindorks.framework.mvvm.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         setupRecyclerView(binding.recyclerView, adapter)
         setupObserver(mainViewModel) { userList ->
-            renderUserList(userList, adapter)
+            observe(userList, adapter)
         }
     }
 
@@ -58,16 +59,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupObserver(
         mainViewModel: MainViewModel,
-        observer: (userList: List<User>) -> Unit
+        observer: (change: Resource<List<User>>) -> Unit
     ) {
         mainViewModel.getUsers().observe(this) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    it.data?.let { users -> observer(users) }
-                }
-                Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                }
+            observer(it)
+        }
+    }
+
+    private fun observe(
+        change: Resource<List<User>>,
+        adapter: MainAdapter
+    ) {
+        when (change.status) {
+            Status.SUCCESS -> {
+                change.data?.let { users -> renderUserList(users, adapter) }
+            }
+            Status.ERROR -> {
+                Toast.makeText(this, change.message, Toast.LENGTH_LONG).show()
             }
         }
     }
