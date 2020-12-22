@@ -16,7 +16,6 @@ import com.mindorks.framework.mvvm.ui.main.adapter.MainAdapter
 import com.mindorks.framework.mvvm.ui.main.viewmodel.MainViewModel
 import com.mindorks.framework.mvvm.utils.Status
 import org.koin.android.ext.android.inject
-import org.koin.android.scope.lifecycleScope
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,36 +26,31 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
-        setupViewModel(binding)
+
+        val viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(MainViewModel::class.java)
+        binding.viewmodel = viewModel
         setupUI(binding)
-        setupObserver(binding)
+
+        val adapter = binding.recyclerView.adapter as MainAdapter
+        setupObserver(viewModel, adapter)
         binding.lifecycleOwner = this
     }
 
-    private fun setupViewModel(binding: ActivityMainBinding) {
-        val mainViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(MainViewModel::class.java)
-        binding.viewmodel = mainViewModel
-    }
-
     private fun setupUI(binding: ActivityMainBinding) {
+        val adapter = MainAdapter(arrayListOf())
         val recyclerView: RecyclerView = binding.recyclerView
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(recyclerView.context)
-            addItemDecoration(
-                DividerItemDecoration(
-                    recyclerView.context,
-                    (recyclerView.layoutManager as LinearLayoutManager).orientation
-                )
+        recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                recyclerView.context,
+                (recyclerView.layoutManager as LinearLayoutManager).orientation
             )
-            adapter = MainAdapter(arrayListOf())
-        }
+        )
+        recyclerView.adapter = adapter
     }
 
-    private fun setupObserver(binding: ActivityMainBinding) {
-        val mainViewModel: MainViewModel = binding.viewmodel as MainViewModel
-        val adapter = binding.recyclerView.adapter as MainAdapter
-
+    private fun setupObserver(mainViewModel: MainViewModel, adapter: MainAdapter) {
         mainViewModel.users.observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
