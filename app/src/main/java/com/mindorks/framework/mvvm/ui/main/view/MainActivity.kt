@@ -24,17 +24,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MainViewModel::class.java)
         binding.viewmodel = viewModel
-        setupUI(binding)
 
-        val adapter = binding.recyclerView.adapter as MainAdapter
-        setupObserver(viewModel, adapter)
-        binding.lifecycleOwner = this
+        setupUI(binding)
+        setupObserver(binding)
     }
 
     private fun setupUI(binding: ActivityMainBinding) {
@@ -50,7 +49,10 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    private fun setupObserver(mainViewModel: MainViewModel, adapter: MainAdapter) {
+    private fun setupObserver(binding: ActivityMainBinding) {
+        val mainViewModel = binding.viewmodel as MainViewModel
+        val adapter = binding.recyclerView.adapter as MainAdapter
+
         mainViewModel.users.observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
