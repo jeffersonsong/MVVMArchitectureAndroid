@@ -29,51 +29,46 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setupViewModel(binding)
+        setupUI(binding)
+        setupObserver(binding)
+        binding.lifecycleOwner = this
+    }
 
+    private fun setupViewModel(binding: ActivityMainBinding) {
         val mainViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MainViewModel::class.java)
         binding.viewmodel = mainViewModel
-        binding.lifecycleOwner = this
+    }
 
-        val adapter = MainAdapter(arrayListOf())
-
-        setupRecyclerView(binding.recyclerView, adapter)
-        setupObserver(mainViewModel) { userList ->
-            observe(userList, adapter)
+    private fun setupUI(binding: ActivityMainBinding) {
+        val recyclerView: RecyclerView = binding.recyclerView
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(recyclerView.context)
+            addItemDecoration(
+                DividerItemDecoration(
+                    recyclerView.context,
+                    (recyclerView.layoutManager as LinearLayoutManager).orientation
+                )
+            )
+            adapter = MainAdapter(arrayListOf())
         }
     }
 
-    private fun setupRecyclerView(
-        recyclerView: RecyclerView,
-        adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>
-    ) {
-        recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
-        recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                recyclerView.context,
-                (recyclerView.layoutManager as LinearLayoutManager).orientation
-            )
-        )
-    }
+    private fun setupObserver(binding: ActivityMainBinding) {
+        val mainViewModel: MainViewModel = binding.viewmodel as MainViewModel
+        val adapter = binding.recyclerView.adapter as MainAdapter
 
-    private fun setupObserver(
-        mainViewModel: MainViewModel,
-        observer: (change: Resource<List<User>>) -> Unit
-    ) {
-        mainViewModel.getUsers().observe(this) { observer(it) }
-    }
-
-    private fun observe(
-        change: Resource<List<User>>,
-        adapter: MainAdapter
-    ) {
-        when (change.status) {
-            Status.SUCCESS -> {
-                change.data?.let { users -> renderUserList(users, adapter) }
-            }
-            Status.ERROR -> {
-                Toast.makeText(this, change.message, Toast.LENGTH_LONG).show()
+        mainViewModel.users.observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { users -> renderUserList(users, adapter) }
+                }
+                Status.ERROR -> {
+                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                }
+                else -> {
+                }
             }
         }
     }
