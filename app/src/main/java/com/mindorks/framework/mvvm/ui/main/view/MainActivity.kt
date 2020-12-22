@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         val mainViewModel: MainViewModel = binding.viewmodel as MainViewModel
         val adapter = binding.recyclerView.adapter as MainAdapter
 
-        mainViewModel.getUsers().observe(this) {
+        mainViewModel.users.observe(this) {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { users -> renderUserList(users, adapter) }

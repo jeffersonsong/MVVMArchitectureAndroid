@@ -42,7 +42,7 @@ class MainViewModelTest {
 
         viewModel = MainViewModel(mainRepository)
 
-        val users = viewModel.getUsers().value!!
+        val users = viewModel.users.value!!
         assertThat(users.status, `is`(Status.SUCCESS))
         assertThat(users.data, hasItem(user))
     }
@@ -59,7 +59,7 @@ class MainViewModelTest {
 
         viewModel = MainViewModel(mainRepository)
 
-        val users = viewModel.getUsers().value!!
+        val users = viewModel.users.value!!
         assertThat(users.status, `is`(Status.ERROR))
         assertNull(users.data)
         assertThat(users.message, `is`("Something Went Wrong"))
@@ -76,11 +76,9 @@ class MainViewModelTest {
 
         viewModel = MainViewModel(mainRepository)
 
-        val users = viewModel.getUsers().value!!
+        val users = viewModel.users.value!!
         assertThat(users.status, `is`(Status.ERROR))
         assertNull(users.data)
         assertThat(users.message, `is`("Something Went Wrong"))
     }
-
-
 }

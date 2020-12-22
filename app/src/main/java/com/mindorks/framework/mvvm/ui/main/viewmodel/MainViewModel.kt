@@ -17,14 +17,16 @@ import javax.inject.Singleton
 @Singleton
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
-    private val users = MutableLiveData<Resource<List<User>>>()
+    private val _users = MutableLiveData<Resource<List<User>>>()
 
-    val loading: LiveData<Int> = Transformations.map(users) {
+    val users: LiveData<Resource<List<User>>> get() = _users
+
+    val loading: LiveData<Int> = Transformations.map(_users) {
         if (it.status == Status.LOADING) View.VISIBLE
         else View.GONE
     }
 
-    val dataAvailable: LiveData<Int> = Transformations.map(users) {
+    val dataAvailable: LiveData<Int> = Transformations.map(_users) {
         if (it.status == Status.SUCCESS) View.VISIBLE
         else View.GONE
     }
@@ -34,26 +36,22 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
     }
 
     private fun fetchUsers() {
-        users.postValue(Resource.loading(null))
+        _users.postValue(Resource.loading(null))
 
         val call = mainRepository.getUsers()
         call.enqueue(object : Callback<List<User>> {
             override fun onResponse(call: Call<List<User>>?, response: Response<List<User>>?) {
                 if (response!!.isSuccessful) {
                     val userList = response.body()
-                    users.postValue(Resource.success(userList))
+                    _users.postValue(Resource.success(userList))
                 } else {
-                    users.postValue(Resource.error("Something Went Wrong", null))
+                    _users.postValue(Resource.error("Something Went Wrong", null))
                 }
             }
 
             override fun onFailure(call: Call<List<User>>?, t: Throwable?) {
-                users.postValue(Resource.error("Something Went Wrong", null))
+                _users.postValue(Resource.error("Something Went Wrong", null))
             }
         })
-    }
-
-    fun getUsers(): LiveData<Resource<List<User>>> {
-        return users
     }
 }
