@@ -19,6 +19,7 @@ android {
         buildConfigField 'String', 'BASE_URL', "\"https://5e510330f2c0d300147c034c.mockapi.io/\""
 //        testInstrumentationRunner 'com.mindorks.framework.mvvm.CustomTestRunner'
         testInstrumentationRunner 'com.mindorks.framework.mvvm.tests.MVVMDemoAppTestRunner'
+        //jvmArgs '-javaagent:/Users/jeffersons/Library/Caches/Google/AndroidStudio4.1/testAgent/intellij-coverage-agent-1.0.508.jar=/private/var/folders/mt/gr50gffn7kn1n0xtrkctp9n00000gn/T/coverage2691args'
     }
 
     sourceSets {
