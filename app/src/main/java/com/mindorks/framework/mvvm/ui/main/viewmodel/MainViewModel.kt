@@ -12,9 +12,7 @@ import com.mindorks.framework.mvvm.utils.Status
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import javax.inject.Singleton
 
-@Singleton
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
     private val _users = MutableLiveData<Resource<List<User>>>()
