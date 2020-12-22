@@ -7,10 +7,9 @@ import androidx.test.filters.LargeTest
 import com.mindorks.framework.mvvm.ui.main.view.MainActivity
 import org.junit.Before
 import org.junit.Test
-import org.koin.test.KoinTest
 
 @LargeTest
-class AppTest : KoinTest {
+class AppTest {
 
     @Before
     fun applicationStarted() {
