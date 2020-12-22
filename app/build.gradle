@@ -18,6 +18,15 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner 'com.mindorks.framework.mvvm.CustomTestRunner'
+//        testInstrumentationRunner 'com.mindorks.framework.mvvm.tests.MVVMDemoAppTestRunner'
+    }
+
+    sourceSets {
+        androidTest {
+            assets {
+                assets.srcDirs = ['src/androidTest/assets']
+            }
+        }
     }
 
     buildTypes {
@@ -70,4 +79,5 @@ dependencies {
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     // Make Hilt generate code in the androidTest folder
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    androidTestImplementation "io.cucumber:cucumber-android:4.4.1"
 }
