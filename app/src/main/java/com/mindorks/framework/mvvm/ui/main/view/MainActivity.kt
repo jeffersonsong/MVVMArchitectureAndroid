@@ -14,16 +14,14 @@ import com.mindorks.framework.mvvm.databinding.ActivityMainBinding
 import com.mindorks.framework.mvvm.ui.base.ViewModelFactory
 import com.mindorks.framework.mvvm.ui.main.adapter.MainAdapter
 import com.mindorks.framework.mvvm.ui.main.viewmodel.MainViewModel
-import com.mindorks.framework.mvvm.utils.Resource
 import com.mindorks.framework.mvvm.utils.Status
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.android.scope.lifecycleScope
 
-@AndroidEntryPoint
+
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModelFactory: ViewModelFactory by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

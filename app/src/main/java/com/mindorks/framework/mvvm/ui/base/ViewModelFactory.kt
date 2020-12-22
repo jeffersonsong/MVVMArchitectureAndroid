@@ -4,11 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.mindorks.framework.mvvm.data.repository.MainRepository
 import com.mindorks.framework.mvvm.ui.main.viewmodel.MainViewModel
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ViewModelFactory @Inject constructor(private val mainRepository: MainRepository) :
+class ViewModelFactory(private val mainRepository: MainRepository) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
