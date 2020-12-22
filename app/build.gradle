@@ -3,11 +3,6 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'koin'
-    /*
-    // Hilt
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
-     */
 }
 
 android {
@@ -66,6 +61,7 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
+    // retrofit2
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2_version"
 
@@ -73,14 +69,10 @@ dependencies {
     implementation "org.koin:koin-android-viewmodel:$koin_version"
     implementation "org.koin:koin-android:$koin_version"
 
-    /*
-    // Hilt
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-     */
-
     testImplementation 'junit:junit:4.+'
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    //testImplementation 'org.mockito:mockito-inline:2.23.4'
+    testImplementation('com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0')
+
     testImplementation 'android.arch.core:core-testing:2.1.0'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -89,11 +81,5 @@ dependencies {
     testImplementation "org.koin:koin-test:$koin_version"
     androidTestImplementation "org.koin:koin-test:$koin_version"
 
-    /*
-    // Hilt testing dependency
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    // Make Hilt generate code in the androidTest folder
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
-     */
     androidTestImplementation "io.cucumber:cucumber-android:4.4.1"
 }
